@@ -27,35 +27,47 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 class ButtonsPanel extends JPanel implements ActionListener{
+	private Siec siec;
+	private int [] tabNeuronow = {7, 5, 3};
+	private JButton rozpoznaj;
+	private JButton ucz;
+	private JButton testuj;
 	
 	private enum Actions {
 	    ZAPISZ8x8,
 	    WYCZYSC,
 	    UCZ,
-	    ROZPOZNAJ
+	    ROZPOZNAJ,
+	    TESTUJ
 	  }
 	public ButtonsPanel() {
 		this.setPreferredSize(new Dimension(200, 200));
 		this.setBackground(Color.lightGray);
 		
-		JButton rozpoznaj=new JButton("Rozpoznaj");
+		rozpoznaj=new JButton("Rozpoznaj");
 		JButton wyczysc=new JButton("Wyczyść");
 		JButton zapisz8x8=new JButton("Zapisz 8x8");
-		JButton ucz=new JButton("Ucz");
+		testuj = new JButton("Testuj");
+		ucz=new JButton("Ucz");
 		
 		zapisz8x8.addActionListener(this);
 		zapisz8x8.setActionCommand(Actions.ZAPISZ8x8.name());
 		wyczysc.addActionListener(this);
 		wyczysc.setActionCommand(Actions.WYCZYSC.name());
+		testuj.addActionListener(this);
+		testuj.setActionCommand(Actions.TESTUJ.name());
+		testuj.setEnabled(false);
 		ucz.addActionListener(this);
 		ucz.setActionCommand(Actions.UCZ.name());
 		rozpoznaj.addActionListener(this);
+		rozpoznaj.setEnabled(false);
 		rozpoznaj.setActionCommand(Actions.ROZPOZNAJ.name());
 		
 		
 		this.add(rozpoznaj);
 		this.add(wyczysc);
-		this.add(zapisz8x8);	
+		this.add(zapisz8x8);
+		this.add(testuj);
 		this.add(ucz);
 		setLayout (new BoxLayout (this, BoxLayout.Y_AXIS));
 		
@@ -101,13 +113,30 @@ class ButtonsPanel extends JPanel implements ActionListener{
 			Paint.paintPanel.clear();
 		}
 		if (e.getActionCommand() == Actions.UCZ.name()) {
-			Ucz ucz = new Ucz();
-			double [][] ciagUczacy = ucz.WczytajiUcz();
-			double [][] ciagOczekiwany = ucz.WczytajOczekiwane();	
+			ucz.setEnabled(false);
+			Ucz uczObject = new Ucz();
+			double [][] ciagUczacy = uczObject.WczytajiUcz();
+			double [][] ciagOczekiwany = uczObject.WczytajOczekiwane();
+			siec = new Siec(64, 3, tabNeuronow);
+			ElementUczacy [] daneUczace = new ElementUczacy[ciagUczacy.length];
+			for(int i = 0; i < ciagUczacy.length; i++) {
+				daneUczace[i] = new ElementUczacy(ciagUczacy[i], ciagOczekiwany[i]);
+			}
+			AlgorytmWstecznejPropagacjiBledow algorytm = new AlgorytmWstecznejPropagacjiBledow(siec, daneUczace);
+			algorytm.naucz(10000);
+			rozpoznaj.setEnabled(true);
+			testuj.setEnabled(true);
 		}
 		if (e.getActionCommand() == Actions.ROZPOZNAJ.name()) {
 			Rozpoznaj rozpoznaj = new Rozpoznaj();
 			double [] doRozpoznania = rozpoznaj.RozpoznajLitere();
+			double [] rezultat;
+			rezultat = siec.oblicz_wyjscie(doRozpoznania);
+			System.out.println("W: " + rezultat[0]);
+			System.out.println("M: " + rezultat[1]);
+			System.out.println("N: " + rezultat[2]);
+		}
+		if(e.getActionCommand() == Actions.TESTUJ.name()) {
 			
 		}
 		
