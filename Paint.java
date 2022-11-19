@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
@@ -115,29 +116,64 @@ class ButtonsPanel extends JPanel implements ActionListener{
 		if (e.getActionCommand() == Actions.UCZ.name()) {
 			ucz.setEnabled(false);
 			Ucz uczObject = new Ucz();
-			double [][] ciagUczacy = uczObject.WczytajiUcz();
-			double [][] ciagOczekiwany = uczObject.WczytajOczekiwane();
+			double [][] ciagUczacy = uczObject.WczytajiUcz("uczace");
+			double [][] ciagOczekiwany = uczObject.WczytajOczekiwane("uczace");
 			siec = new Siec(64, 3, tabNeuronow);
 			ElementUczacy [] daneUczace = new ElementUczacy[ciagUczacy.length];
 			for(int i = 0; i < ciagUczacy.length; i++) {
 				daneUczace[i] = new ElementUczacy(ciagUczacy[i], ciagOczekiwany[i]);
 			}
 			AlgorytmWstecznejPropagacjiBledow algorytm = new AlgorytmWstecznejPropagacjiBledow(siec, daneUczace);
-			algorytm.naucz(10000);
+			algorytm.naucz(150);
 			rozpoznaj.setEnabled(true);
 			testuj.setEnabled(true);
 		}
 		if (e.getActionCommand() == Actions.ROZPOZNAJ.name()) {
+			String komunikat;
 			Rozpoznaj rozpoznaj = new Rozpoznaj();
 			double [] doRozpoznania = rozpoznaj.RozpoznajLitere();
 			double [] rezultat;
 			rezultat = siec.oblicz_wyjscie(doRozpoznania);
-			System.out.println("W: " + rezultat[0]);
-			System.out.println("M: " + rezultat[1]);
-			System.out.println("N: " + rezultat[2]);
+			Rozpoznaj.Litera litera = rozpoznaj.klasyfikujLiterę(rezultat);
+			switch(litera) {
+			case LITERA_W:
+				komunikat = "W";
+				break;
+			case LITERA_M:
+				komunikat = "M";
+				break;
+			case LITERA_N:
+				komunikat = "N";
+				break;
+			default:
+				komunikat = "niezdefiniowana";
+			}
+			System.out.println("W: " + String.format("%.2f", rezultat[0]));
+			System.out.println("M: " + String.format("%.2f", rezultat[1]));
+			System.out.println("N: " + String.format("%.2f", rezultat[2]));
+			JOptionPane.showMessageDialog(null, komunikat, "Rozpoznana litera", JOptionPane.INFORMATION_MESSAGE);
 		}
 		if(e.getActionCommand() == Actions.TESTUJ.name()) {
-			
+			Ucz uczObject = new Ucz();
+			Rozpoznaj rozpoznaj = new Rozpoznaj();
+			double [] rezultat;
+			double [][] ciagTestowy = uczObject.WczytajiUcz("testy");
+			double [][] ciagOczekiwany = uczObject.WczytajOczekiwane("testy");
+
+			Rozpoznaj.Litera litera;
+			int poprawne = 0;
+			for(int i = 0; i < ciagTestowy.length; i++) {
+				rezultat = siec.oblicz_wyjscie(ciagTestowy[i]);
+				litera = rozpoznaj.klasyfikujLiterę(rezultat);
+				for(int j = 0; j < rezultat.length; j++) {
+					if((ciagOczekiwany[i][j] > 0.5) && (j == litera.ordinal())) {
+						poprawne++;
+					}
+				}
+			}
+			String komunikat = String.format("%d", poprawne * 100 / ciagTestowy.length);
+			System.out.println("Skuteczność: " + komunikat + "%");
+			JOptionPane.showMessageDialog(null, komunikat + "%", "Skuteczność sieci", JOptionPane.INFORMATION_MESSAGE);
 		}
 		
 		
