@@ -6,19 +6,19 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 class Ucz {
-	public double[][] WczytajiUcz(){
+	public double[][] WczytajiUcz(String folder){
 		double [][] daneUczace = new double [30][64];
 		String sciezka = null;
 		int f = 0;
 		for (int k = 0; k < 3; k++) {
 			if (k==0) {
-				sciezka = "src/W"; 
+				sciezka = "src/" + folder + "/W"; 
 			}
 			if (k==1) {
-				sciezka = "src/M"; 
+				sciezka = "src/" + folder + "/M";
 			}
 			if (k==2) {
-				sciezka = "src/N"; 
+				sciezka = "src/" + folder + "/N";
 			}
 			File path = new File(sciezka);
 			File [] files = path.listFiles();
@@ -51,19 +51,19 @@ class Ucz {
 		}
 	
 	
-	public double[][] WczytajOczekiwane(){
+	public double[][] WczytajOczekiwane(String folder){
 		double [][] daneOczekiwane = new double [30][3];
 		String sciezka = null;
 		int f = 0;
 		for (int k = 0; k < 3; k++) {
 			if (k==0) {
-				sciezka = "src/W"; 
+				sciezka = "src/" + folder + "/W"; 
 			}
 			if (k==1) {
-				sciezka = "src/M"; 
+				sciezka = "src/" + folder + "/M"; 
 			}
 			if (k==2) {
-				sciezka = "src/N"; 
+				sciezka = "src/" + folder + "/N"; 
 			}
 			File path = new File(sciezka);
 			File [] files = path.listFiles();

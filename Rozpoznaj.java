@@ -2,6 +2,10 @@ import java.awt.Point;
 
 
 class Rozpoznaj {
+	public enum Litera {
+		LITERA_W, LITERA_M, LITERA_N, NIEZDEFINIOWANA
+	}
+	
 	public double [] RozpoznajLitere() {
 		
 		
@@ -28,5 +32,18 @@ class Rozpoznaj {
 	      }
 		return literaDoRozpoznania;
 		
+	}
+	
+	public Rozpoznaj.Litera klasyfikujLiterę(double [] wyjscieSieci) {
+		double treshold = 0.89;
+		Rozpoznaj.Litera litera = Rozpoznaj.Litera.NIEZDEFINIOWANA;
+		if(wyjscieSieci[Litera.LITERA_W.ordinal()] > treshold) {
+			litera = Litera.LITERA_W;
+		}else if(wyjscieSieci[Litera.LITERA_M.ordinal()] > treshold) {
+			litera = Litera.LITERA_M;
+		} else if(wyjscieSieci[Litera.LITERA_N.ordinal()] > treshold) {
+			litera = Litera.LITERA_N;
+		}
+		return litera;	
 	}
 }
