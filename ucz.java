@@ -2,12 +2,20 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 class Ucz {
+	FilenameFilter filter = new FilenameFilter() {
+		  
+        public boolean accept(File f, String name)
+        {
+            return name.endsWith(".png");
+        }
+    };
 	public double[][] WczytajiUcz(String folder){
-		double [][] daneUczace = new double [30][64];
+		double [][] daneUczace = new double [96][64];
 		String sciezka = null;
 		int f = 0;
 		for (int k = 0; k < 3; k++) {
@@ -21,7 +29,7 @@ class Ucz {
 				sciezka = "src/" + folder + "/N";
 			}
 			File path = new File(sciezka);
-			File [] files = path.listFiles();
+			File [] files = path.listFiles(filter);
 			for (int p = 0; p < files.length; p++) {
 				BufferedImage image;
 			      File openFile = files[p];
@@ -33,8 +41,7 @@ class Ucz {
 			      }
 			      if (image == null)
 			         return null;
-			      int i = 0; 
-			      
+			      int i = 0; 			      
 			      for (int x = 0; x < image.getWidth(); x++) {
 			          for (int y = 0; y < image.getHeight(); y++) {
 			             Color c = new Color(image.getRGB(x, y));
@@ -47,13 +54,17 @@ class Ucz {
 			      f++;
 				}
 			}
+		
+		
+		
 		return daneUczace;
 		}
 	
 	
 	public double[][] WczytajOczekiwane(String folder){
-		double [][] daneOczekiwane = new double [30][3];
+		double [][] daneOczekiwane = new double [96][3];
 		String sciezka = null;
+		
 		int f = 0;
 		for (int k = 0; k < 3; k++) {
 			if (k==0) {
@@ -66,7 +77,7 @@ class Ucz {
 				sciezka = "src/" + folder + "/N"; 
 			}
 			File path = new File(sciezka);
-			File [] files = path.listFiles();
+			File [] files = path.listFiles(filter);
 			for (int p = 0; p < files.length; p++) {
 				daneOczekiwane[f][k] = 1;  
 			    f++;
