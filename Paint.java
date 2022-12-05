@@ -148,9 +148,10 @@ class ButtonsPanel extends JPanel implements ActionListener{
 			default:
 				komunikat = "niezdefiniowana";
 			}
-			System.out.println("W: " + String.format("%.2f", rezultat[0]));
+			/*System.out.println("W: " + String.format("%.2f", rezultat[0]));
 			System.out.println("M: " + String.format("%.2f", rezultat[1]));
 			System.out.println("N: " + String.format("%.2f", rezultat[2]));
+			System.out.println("");*/
 			JOptionPane.showMessageDialog(null, komunikat, "Rozpoznana litera", JOptionPane.INFORMATION_MESSAGE);
 		}
 		if(e.getActionCommand() == Actions.TESTUJ.name()) {
@@ -172,7 +173,7 @@ class ButtonsPanel extends JPanel implements ActionListener{
 				}
 			}
 			String komunikat = String.format("%d", poprawne * 100 / ciagTestowy.length);
-			System.out.println("Skuteczność: " + komunikat + "%");
+			//System.out.println("Skuteczność: " + komunikat + "%");
 			JOptionPane.showMessageDialog(null, komunikat + "%", "Skuteczność sieci", JOptionPane.INFORMATION_MESSAGE);
 		}
 		
@@ -408,9 +409,9 @@ public class Paint extends JFrame implements ActionListener {
 	            wartosci[x*image.getWidth()+y] = (255.0 - c.getBlue()) / 255;            
 	         }
 	      }
-	      for (int i = 0; i < wartosci.length; i++ ) {
+	      /*for (int i = 0; i < wartosci.length; i++ ) {
 	    	  System.out.println(wartosci[i]);
-	      }	      
+	      }	*/      
 	   }
 
    public static void main(String[] args) {
