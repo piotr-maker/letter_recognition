@@ -35,7 +35,7 @@ class Rozpoznaj {
 	}
 	
 	public Rozpoznaj.Litera klasyfikujLiterę(double [] wyjscieSieci) {
-		double treshold = 0.89;
+		double treshold = 0.95;
 		Rozpoznaj.Litera litera = Rozpoznaj.Litera.NIEZDEFINIOWANA;
 		if(wyjscieSieci[Litera.LITERA_W.ordinal()] > treshold) {
 			litera = Litera.LITERA_W;
