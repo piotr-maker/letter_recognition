@@ -1,11 +1,14 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -42,7 +45,7 @@ class ButtonsPanel extends JPanel implements ActionListener{
 	    TESTUJ
 	  }
 	public ButtonsPanel() {
-		this.setPreferredSize(new Dimension(200, 200));
+		this.setPreferredSize(new Dimension(120, 100));
 		this.setBackground(Color.lightGray);
 		
 		rozpoznaj=new JButton("Rozpoznaj");
@@ -64,13 +67,21 @@ class ButtonsPanel extends JPanel implements ActionListener{
 		rozpoznaj.setEnabled(false);
 		rozpoznaj.setActionCommand(Actions.ROZPOZNAJ.name());
 		
+		rozpoznaj.setAlignmentX(CENTER_ALIGNMENT);
+		zapisz8x8.setAlignmentX(CENTER_ALIGNMENT);
+		wyczysc.setAlignmentX(CENTER_ALIGNMENT);
+		testuj.setAlignmentX(CENTER_ALIGNMENT);
+		ucz.setAlignmentX(CENTER_ALIGNMENT);
 		
+		
+		
+		setLayout (new BoxLayout (this, BoxLayout.Y_AXIS));
 		this.add(rozpoznaj);
 		this.add(wyczysc);
 		this.add(zapisz8x8);
 		this.add(testuj);
 		this.add(ucz);
-		setLayout (new BoxLayout (this, BoxLayout.Y_AXIS));
+		
 		
 		
 	}
@@ -187,8 +198,12 @@ class SimplePaintPanel extends JPanel {
    private final int brushSize;
 
    private int mouseButtonDown = 0;
-   int drawingPanelx = 300;
-   int drawingPanely = 300;
+   Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
+   int drawingPanelx = size.height/2;
+   int drawingPanely = size.height/2;
+   
+
+
 
    public SimplePaintPanel() {
       this(5, new HashSet<Point>());
@@ -224,13 +239,17 @@ class SimplePaintPanel extends JPanel {
    }
 
    public void paint(Graphics g) {
-      int w = drawingPanelx;	
-      int h = drawingPanely;	
+      int w = drawingPanelx = Paint.container.getSize().width;	
+      int h = drawingPanely = Paint.container.getSize().height;	
       g.setColor(Color.white);
       g.fillRect(0, 0, w, h);
       g.setColor(Color.black);
       for (Point point : blackPixels)
          g.drawRect(point.x, point.y, 1, 1);
+      
+      
+      
+      
 
    }
 
@@ -264,13 +283,19 @@ class SimplePaintPanel extends JPanel {
       return points;
    }
 }
+class ResizeListener extends ComponentAdapter {
+    public void componentResized(ComponentEvent e) {
+    	
+    	Paint.paintPanel.repaint();
+    }
+}
 
 public class Paint extends JFrame implements ActionListener {
    private final String ACTION_NEW = "New Image";
    private final String ACTION_LOAD = "Load Image";
    private final String ACTION_SAVE = "Save Image";
    
-   JPanel container = new JPanel();
+   static JPanel container = new JPanel();
    public static SimplePaintPanel paintPanel = new SimplePaintPanel();
    private final ButtonsPanel buttonsPanel = new ButtonsPanel(); 
 
@@ -280,18 +305,23 @@ public class Paint extends JFrame implements ActionListener {
       setTitle("Neural Network");
       Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
       
-      setPreferredSize(new Dimension(600,300));
+      //setPreferredSize(new Dimension(600,300));
+      setPreferredSize(new Dimension(size.height/2+70,size.height/2));
       setLocation(size.width/4, size.height/4);
-      setResizable(false);
+      //setResizable(false);
+      
+      
 
       initMenu();
       
       container.setLayout(new BorderLayout() );
-      container.add(paintPanel, BorderLayout.LINE_START);
-      container.add(buttonsPanel);
+      container.add(paintPanel, BorderLayout.CENTER);
+      container.add(buttonsPanel, BorderLayout.LINE_END);
       
       this.getContentPane().add(container);
-
+      
+      
+      container.addComponentListener(new ResizeListener());
       pack();
       setVisible(true);
    }
@@ -313,8 +343,10 @@ public class Paint extends JFrame implements ActionListener {
       menu.add(mnuSave);
       menuBar.add(menu);
       this.setJMenuBar(menuBar);
+      
    }
-
+   
+   
    @Override
    public void actionPerformed(ActionEvent ev) {
       switch (ev.getActionCommand()) {
