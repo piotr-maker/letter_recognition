@@ -18,16 +18,16 @@ class Ucz {
 		int f = 0;
 		for (int k = 0; k < 4; k++) {
 			if (k==0) {
-				sciezka = "src/" + folder + "/W"; 
+				sciezka = "src/src/" + folder + "/W"; 
 			}
 			if (k==1) {
-				sciezka = "src/" + folder + "/M";
+				sciezka = "src/src/" + folder + "/M";
 			}
 			if (k==2) {
-				sciezka = "src/" + folder + "/N";
+				sciezka = "src/src/" + folder + "/N";
 			}
 			if (k==3) {
-				sciezka = "src/" + folder + "/pozostale";
+				sciezka = "src/src/" + folder + "/pozostale";
 			}
 			File path = new File(sciezka);
 			File [] files = path.listFiles(filter);
@@ -69,16 +69,16 @@ class Ucz {
 		int f = 0;
 		for (int k = 0; k < 4; k++) {
 			if (k==0) {
-				sciezka = "src/" + folder + "/W"; 
+				sciezka = "src/src/" + folder + "/W"; 
 			}
 			if (k==1) {
-				sciezka = "src/" + folder + "/M"; 
+				sciezka = "src/src/" + folder + "/M"; 
 			}
 			if (k==2) {
-				sciezka = "src/" + folder + "/N"; 
+				sciezka = "src/src/" + folder + "/N"; 
 			}
 			if (k==3) {
-				sciezka = "src/" + folder + "/pozostale"; 
+				sciezka = "src/src/" + folder + "/pozostale"; 
 			}
 			File path = new File(sciezka);
 			File [] files = path.listFiles(filter);
