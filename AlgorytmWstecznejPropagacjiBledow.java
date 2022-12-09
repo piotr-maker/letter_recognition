@@ -15,7 +15,7 @@ public class AlgorytmWstecznejPropagacjiBledow {
 		for(int i = 0; i < liczbaEpok; i++) {
 			sigma = uruchomEpoke(eta);
 			siec.wprowadzKorekty();
-			//System.out.println("Błąd: " + String.format("%.9f", sigma));
+			Debugger.log("Błąd: " + String.format("%.9f", sigma));
 		}
 	}
 	

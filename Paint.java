@@ -144,10 +144,11 @@ class ButtonsPanel extends JPanel implements ActionListener{
 			default:
 				komunikat = "niezdefiniowana";
 			}
-			/*System.out.println("W: " + String.format("%.2f", rezultat[0]));
-			System.out.println("M: " + String.format("%.2f", rezultat[1]));
-			System.out.println("N: " + String.format("%.2f", rezultat[2]));
-			System.out.println("");*/
+
+			Debugger.log("W: " + String.format("%.2f", rezultat[0]));
+			Debugger.log("M: " + String.format("%.2f", rezultat[1]));
+			Debugger.log("N: " + String.format("%.2f", rezultat[2]));
+			Debugger.log("");
 			JOptionPane.showMessageDialog(null, komunikat, "Rozpoznana litera", JOptionPane.INFORMATION_MESSAGE);
 		}
 		if(e.getActionCommand() == Actions.TESTUJ.name()) {
@@ -169,7 +170,7 @@ class ButtonsPanel extends JPanel implements ActionListener{
 				}
 			}
 			String komunikat = String.format("%d", poprawne * 100 / ciagTestowy.length);
-			//System.out.println("Skuteczność: " + komunikat + "%");
+			Debugger.log("Skuteczność: " + komunikat + "%");
 			JOptionPane.showMessageDialog(null, komunikat + "%", "Skuteczność sieci", JOptionPane.INFORMATION_MESSAGE);
 		}
 	   }	
@@ -265,8 +266,6 @@ public class Paint extends JFrame implements ActionListener {
          return;
       }
    }
-   
-   
 
    private void doLoadImage() {
       JFileChooser fileChooser = new JFileChooser();
@@ -318,13 +317,11 @@ public class Paint extends JFrame implements ActionListener {
 	            Color c = new Color(image.getRGB(x, y));          
 	            wartosci[x*image.getWidth()+y] = (255.0 - c.getBlue()) / 255;            
 	         }
-	      }
-	      /*for (int i = 0; i < wartosci.length; i++ ) {
-	    	  System.out.println(wartosci[i]);
-	      }	*/      
+	      } 
 	   }
 
    public static void main(String[] args) {
+	   Debugger.setEnabled(false);
       SwingUtilities.invokeLater(new Runnable() {
          public void run() {
             new Paint();
