@@ -7,26 +7,27 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 class Ucz {
-	FilenameFilter filter = new FilenameFilter() {
-		  
-        public boolean accept(File f, String name)
-        {
+	FilenameFilter filter = new FilenameFilter() {		  
+        public boolean accept(File f, String name) {
             return name.endsWith(".png");
         }
     };
 	public double[][] WczytajiUcz(String folder){
-		double [][] daneUczace = new double [96][64];
+		double [][] daneUczace = new double [128][64];
 		String sciezka = null;
 		int f = 0;
-		for (int k = 0; k < 3; k++) {
+		for (int k = 0; k < 4; k++) {
 			if (k==0) {
-				sciezka = "src/src/" + folder + "/W"; 
+				sciezka = "src/" + folder + "/W"; 
 			}
 			if (k==1) {
-				sciezka = "src/src/" + folder + "/M";
+				sciezka = "src/" + folder + "/M";
 			}
 			if (k==2) {
-				sciezka = "src/src/" + folder + "/N";
+				sciezka = "src/" + folder + "/N";
+			}
+			if (k==3) {
+				sciezka = "src/" + folder + "/pozostale";
 			}
 			File path = new File(sciezka);
 			File [] files = path.listFiles(filter);
@@ -62,19 +63,22 @@ class Ucz {
 	
 	
 	public double[][] WczytajOczekiwane(String folder){
-		double [][] daneOczekiwane = new double [96][3];
+		double [][] daneOczekiwane = new double [128][4];
 		String sciezka = null;
 		
 		int f = 0;
-		for (int k = 0; k < 3; k++) {
+		for (int k = 0; k < 4; k++) {
 			if (k==0) {
-				sciezka = "src/src/" + folder + "/W"; 
+				sciezka = "src/" + folder + "/W"; 
 			}
 			if (k==1) {
-				sciezka = "src/src/" + folder + "/M"; 
+				sciezka = "src/" + folder + "/M"; 
 			}
 			if (k==2) {
-				sciezka = "src/src/" + folder + "/N"; 
+				sciezka = "src/" + folder + "/N"; 
+			}
+			if (k==3) {
+				sciezka = "src/" + folder + "/pozostale"; 
 			}
 			File path = new File(sciezka);
 			File [] files = path.listFiles(filter);

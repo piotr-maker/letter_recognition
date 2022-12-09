@@ -29,7 +29,7 @@ import javax.swing.SwingUtilities;
 
 class ButtonsPanel extends JPanel implements ActionListener{
 	private Siec siec;
-	private int [] tabNeuronow = {7, 5, 3};
+	private int [] tabNeuronow = {7, 5, 4};
 	private JButton rozpoznaj;
 	private JButton ucz;
 	private JButton testuj;
