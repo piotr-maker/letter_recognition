@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Toolkit;
@@ -25,7 +26,7 @@ import javax.swing.SwingUtilities;
 
 class ButtonsPanel extends JPanel implements ActionListener{
 	private Siec siec;
-	private int [] tabNeuronow = {7, 5, 3};
+	private int [] tabNeuronow = {7, 5, 4};
 	private JButton rozpoznaj;
 	private JButton ucz;
 	private JButton testuj;
@@ -38,7 +39,7 @@ class ButtonsPanel extends JPanel implements ActionListener{
 	    TESTUJ
 	  }
 	public ButtonsPanel() {
-		this.setPreferredSize(new Dimension(200, 200));
+		this.setPreferredSize(new Dimension(120, 100));
 		this.setBackground(Color.lightGray);
 		
 		rozpoznaj=new JButton("Rozpoznaj");
@@ -60,13 +61,21 @@ class ButtonsPanel extends JPanel implements ActionListener{
 		rozpoznaj.setEnabled(false);
 		rozpoznaj.setActionCommand(Actions.ROZPOZNAJ.name());
 		
+		rozpoznaj.setAlignmentX(CENTER_ALIGNMENT);
+		zapisz8x8.setAlignmentX(CENTER_ALIGNMENT);
+		wyczysc.setAlignmentX(CENTER_ALIGNMENT);
+		testuj.setAlignmentX(CENTER_ALIGNMENT);
+		ucz.setAlignmentX(CENTER_ALIGNMENT);
 		
+		
+		
+		setLayout (new BoxLayout (this, BoxLayout.Y_AXIS));
 		this.add(rozpoznaj);
 		this.add(wyczysc);
 		this.add(zapisz8x8);
 		this.add(testuj);
 		this.add(ucz);
-		setLayout (new BoxLayout (this, BoxLayout.Y_AXIS));
+		
 		
 		
 	}
@@ -173,7 +182,13 @@ class ButtonsPanel extends JPanel implements ActionListener{
 			Debugger.log("Skuteczność: " + komunikat + "%");
 			JOptionPane.showMessageDialog(null, komunikat + "%", "Skuteczność sieci", JOptionPane.INFORMATION_MESSAGE);
 		}
-	   }	
+	}
+}
+class ResizeListener extends ComponentAdapter {
+    public void componentResized(ComponentEvent e) {
+    	
+    	Paint.paintPanel.repaint();
+    }
 }
 
 public class Paint extends JFrame implements ActionListener {
@@ -181,7 +196,7 @@ public class Paint extends JFrame implements ActionListener {
    private final String ACTION_LOAD = "Load Image";
    private final String ACTION_SAVE = "Save Image";
    
-   JPanel container = new JPanel();
+   static JPanel container = new JPanel();
    public static SimplePaintPanel paintPanel = new SimplePaintPanel();
    private final ButtonsPanel buttonsPanel = new ButtonsPanel(); 
 
@@ -191,18 +206,21 @@ public class Paint extends JFrame implements ActionListener {
       setTitle("Neural Network");
       Dimension size = Toolkit.getDefaultToolkit().getScreenSize();
       
-      setPreferredSize(new Dimension(600,300));
+      //setPreferredSize(new Dimension(600,300));
+      setPreferredSize(new Dimension(size.height/2+70,size.height/2));
       setLocation(size.width/4, size.height/4);
       setResizable(true);
 
       initMenu();
       
       container.setLayout(new BorderLayout() );
-      container.add(paintPanel, BorderLayout.LINE_START);
-      container.add(buttonsPanel);
+      container.add(paintPanel, BorderLayout.CENTER);
+      container.add(buttonsPanel, BorderLayout.LINE_END);
       
       this.getContentPane().add(container);
-
+      
+      
+      container.addComponentListener(new ResizeListener());
       pack();
       setVisible(true);
    }
@@ -224,8 +242,10 @@ public class Paint extends JFrame implements ActionListener {
       menu.add(mnuSave);
       menuBar.add(menu);
       this.setJMenuBar(menuBar);
+      
    }
-
+   
+   
    @Override
    public void actionPerformed(ActionEvent ev) {
       switch (ev.getActionCommand()) {
