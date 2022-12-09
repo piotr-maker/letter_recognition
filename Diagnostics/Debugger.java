@@ -1,3 +1,4 @@
+package Diagnostics;
 
 public class Debugger {
 	private static boolean sEnabled = false;

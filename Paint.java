@@ -26,8 +26,15 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-class ButtonsPanel extends JPanel implements ActionListener{
-	private Siec siec;
+import Diagnostics.Debugger;
+import NeuralNetwork.ActivationFunction;
+import NeuralNetwork.Dataset;
+import NeuralNetwork.Network;
+import NeuralNetwork.SigmoidFunction;
+
+class ButtonsPanel extends JPanel implements ActionListener {
+	private Network network;
+	//private Siec siec;
 	private int [] tabNeuronow = {7, 5, 4};
 	private JButton rozpoznaj;
 	private JButton ucz;
@@ -125,13 +132,13 @@ class ButtonsPanel extends JPanel implements ActionListener{
 			Ucz uczObject = new Ucz();
 			double [][] ciagUczacy = uczObject.WczytajiUcz("uczace");
 			double [][] ciagOczekiwany = uczObject.WczytajOczekiwane("uczace");
-			siec = new Siec(64, 3, tabNeuronow);
-			ElementUczacy [] daneUczace = new ElementUczacy[ciagUczacy.length];
+			ActivationFunction function = new SigmoidFunction();
+			network = new Network(function, 64, 3, tabNeuronow);
+			Dataset [] daneUczace = new Dataset[ciagUczacy.length];
 			for(int i = 0; i < ciagUczacy.length; i++) {
-				daneUczace[i] = new ElementUczacy(ciagUczacy[i], ciagOczekiwany[i]);
+				daneUczace[i] = new Dataset(ciagUczacy[i], ciagOczekiwany[i]);
 			}
-			AlgorytmWstecznejPropagacjiBledow algorytm = new AlgorytmWstecznejPropagacjiBledow(siec, daneUczace);
-			algorytm.naucz(150);
+			network.learn(daneUczace, 150);
 			rozpoznaj.setEnabled(true);
 			testuj.setEnabled(true);
 		}
@@ -140,7 +147,7 @@ class ButtonsPanel extends JPanel implements ActionListener{
 			Rozpoznaj rozpoznaj = new Rozpoznaj();
 			double [] doRozpoznania = rozpoznaj.RozpoznajLitere();
 			double [] rezultat;
-			rezultat = siec.oblicz_wyjscie(doRozpoznania);
+			rezultat = network.getOutput(doRozpoznania);
 			Rozpoznaj.Litera litera = rozpoznaj.klasyfikujLiterę(rezultat);
 			switch(litera) {
 			case LITERA_W:
@@ -172,7 +179,7 @@ class ButtonsPanel extends JPanel implements ActionListener{
 			Rozpoznaj.Litera litera;
 			int poprawne = 0;
 			for(int i = 0; i < ciagTestowy.length; i++) {
-				rezultat = siec.oblicz_wyjscie(ciagTestowy[i]);
+				rezultat = network.getOutput(ciagTestowy[i]);
 				litera = rozpoznaj.klasyfikujLiterę(rezultat);
 				for(int j = 0; j < rezultat.length; j++) {
 					if((ciagOczekiwany[i][j] > 0.5) && (j == litera.ordinal())) {
