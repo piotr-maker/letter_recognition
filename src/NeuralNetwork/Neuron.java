@@ -25,19 +25,18 @@ class Neuron {
 		this.inputSignals = liczba_wejsc;
 		weights = new double[liczba_wejsc+1];
 		corrections = new double [liczba_wejsc + 1];
-		generuj();
+		initializeWeights();
 	}
 
-	private void generuj() {
-		Random r=new Random();
+	private void initializeWeights() {
+		Random r = new Random();
 		for(int i = 0; i <= inputSignals; i++) {
 			weights[i] = (r.nextDouble()-0.5) * 2.0 * randomCoefficient;
 		}
 	}
 
 	protected double getOutput(double [] inputs) {
-		//double fi=wagi[0];
-		double fi=0.0;
+		double fi = 0.0;
 		this.inputs = new double [inputs.length];
 		System.arraycopy(inputs, 0, this.inputs, 0, inputs.length);
 		
@@ -46,9 +45,6 @@ class Neuron {
 		}
 		
 		double result = activationFunc.getOutput(fi);
-		//double result = 1.0 / (1.0 + Math.exp(-fi));// funkcja aktywacji sigma -unip
-		//double wynik=(fi>0.0)?1.0:0.0;//skok jednostkowy
-		//double wynik=fi; //f.a. liniowa
 		output = result;
 		return result;
 	}
