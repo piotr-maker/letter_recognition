@@ -163,7 +163,7 @@ public class App extends JFrame {
 		for(int i = 0; i < lettersCount; i++) {
 			String datasetDir = type.toString().toLowerCase();
 			String letterDir = Letter.values()[i].toString().toLowerCase();
-			paths[i] = new String("src/src/" + datasetDir + '/' + letterDir);
+			paths[i] = new String("dataset/" + datasetDir + '/' + letterDir);
 			System.out.println(paths[i]);
 		}
 		
