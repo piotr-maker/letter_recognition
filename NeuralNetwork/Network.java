@@ -27,6 +27,19 @@ public class Network {
 		}
 	}
 
+	public boolean testData(Dataset data, double treshold) {
+		boolean ret = true;
+		double [] results = getOutput(data.getData());
+		for(int i = 0; i < results.length; i++) {
+			int comp = (results[i] > treshold) ? 1 : 0;
+			if(comp != (int)(data.getDesiredOutput()[i])) {
+				ret = false;
+				break;
+			}
+		}
+		return ret;
+	}
+	
 	public double [] getOutput(double [] inputs) {
 		double [] output = null;
 		for(int i = 0; i < layers.length; i++) {
