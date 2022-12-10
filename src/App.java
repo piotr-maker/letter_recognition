@@ -40,10 +40,10 @@ public class App extends JFrame {
 
 	// Ustawienia sieci
 	private Network network;
-	private int epochCount = 150;
+	private int epochCount = 900;
 	private int [] neurons = {7, 5, Letter.UNDEFINED.ordinal()};
 	private int cols = 8, rows = 8;
-	private double treshold = 0.9;
+	private double treshold = 0.85;
 
 	public App(String title) {
 		super(title);
@@ -197,7 +197,9 @@ public class App extends JFrame {
 	}
 
 	protected void saveImage() {
+		File defaultDir = new File(System.getProperty("user.dir") + System.getProperty("file.separator")+ "dataset");
 		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setCurrentDirectory(defaultDir);
 		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int result = fileChooser.showSaveDialog(this);
 		if (result != JFileChooser.APPROVE_OPTION)

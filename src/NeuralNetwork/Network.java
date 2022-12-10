@@ -5,6 +5,7 @@ import java.util.Arrays;
 import Diagnostics.Debugger;
 
 public class Network {
+	static final double etaEps = 0.999;
 	protected Layer [] layers;
 	private Dataset [] learningDataset;
 
@@ -25,6 +26,7 @@ public class Network {
 			updateCorrections();
 			Debugger.log("Błąd: " + String.format("%.9f", sigma));
 		}
+		eta *= etaEps;
 	}
 
 	public boolean testData(Dataset data, double treshold) {

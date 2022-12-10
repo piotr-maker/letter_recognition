@@ -19,8 +19,8 @@ public class PaintPanel extends JPanel implements MouseListener, MouseMotionList
 	private int previousPenY = -1;
 	private BufferedImage image;
 
-	private int width = 400;
-	private int height = 400;
+	private int width = 500;
+	private int height = 500;
 
 	public PaintPanel() {
 		this.addMouseMotionListener(this);
