@@ -62,7 +62,12 @@ public class Network {
 
 			backpropagation(sigma);
 			calcCorrections(eta);
-			signalError += Math.pow(Arrays.stream(sigma).sum() / sigma.length, 2.0);
+			
+			double tempError = 0.0;
+			for(double s : sigma) {
+				tempError += Math.pow(s, 2.0);
+			}
+			signalError += (tempError / sigma.length);
 		}
 		return signalError / learningDataset.length;
 	}

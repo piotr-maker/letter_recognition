@@ -164,7 +164,6 @@ public class App extends JFrame {
 			String datasetDir = type.toString().toLowerCase();
 			String letterDir = Letter.values()[i].toString().toLowerCase();
 			paths[i] = new String("dataset/" + datasetDir + '/' + letterDir);
-			System.out.println(paths[i]);
 		}
 		
 		File [] dirs = new File[lettersCount];
@@ -226,7 +225,7 @@ public class App extends JFrame {
 	}
 
 	public static void main(String [] args) {
-		Debugger.setEnabled(true);
+		Debugger.setEnabled(false);
 		EventQueue.invokeLater(new Runnable() {
 			@Override
 			public void run() {
